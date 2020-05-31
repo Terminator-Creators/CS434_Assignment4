@@ -62,7 +62,13 @@ class PCA():
         self.eig_vals = None
         self.eig_vecs = None
 
-        x = x - PCA.mean(x)
+        center = x - PCA.mean(x)
+        cov_matrix = self.cov(center)
+        
+        (eigval, eigvec) = self.eig(cov_matrix)
+        self.eig_vals = eigval
+        self.eig_vecs = eigvec
+
         ########################################
         #       YOUR CODE GOES HERE            #
         ########################################
