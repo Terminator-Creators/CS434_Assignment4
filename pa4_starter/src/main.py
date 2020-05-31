@@ -58,7 +58,7 @@ def plot_y_vs_x_list(y_vs_x, x_label, y_label, save_path):
 
     print('Saved at : %s' % fld)
 
-
+# Function to plot y values versus x values
 def plot_y_vs_x(ys_vs_x, x_label, y_label, save_path):
     fld = os.path.join(args.root_dir, save_path)
     if not os.path.exists((fld)):
@@ -77,7 +77,8 @@ def plot_y_vs_x(ys_vs_x, x_label, y_label, save_path):
 
 
 def visualize(x_train, y_train):
-    pass
+    
+
     ##################################
     #      YOUR CODE GOES HERE       #
     ##################################
