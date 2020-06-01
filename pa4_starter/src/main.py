@@ -77,7 +77,24 @@ def plot_y_vs_x(ys_vs_x, x_label, y_label, save_path):
 
 
 def visualize(x_train, y_train):
+    print(x_train)
+
+    new_x_train = []
+    for item in range(len(x_train)):
+        new_x_train.append(-np.sort(-x_train[item]))
+    component1 = []
+    component2 = []
+    for item in range(len(new_x_train)):
+        component1.append(new_x_train[item][0])
+        component2.append(new_x_train[item][1])
+
+    plt.scatter(component1, component2, c=y_train)
+    plt.xlabel("component1")
+    plt.ylabel("component2")
+    plt.savefig("visualize.png")
+    plt.clf()
     
+    print('Saved at : %s' % args.root_dir)
 
     ##################################
     #      YOUR CODE GOES HERE       #
@@ -113,13 +130,12 @@ def apply_kmeans(do_pca, x_train, y_train, x_test, y_test, kmeans_max_iter, kmea
 
 if __name__ == '__main__':
     args = load_args()
-    x_train, y_train, x_test, y_test = load_data(args.root_dir)
+    x_train, y_train = load_data(args.root_dir)
 
     if args.pca == 1:
         pca = PCA(args.pca_retain_ratio)
         pca.fit(x_train)
         x_train = pca.transform(x_train)
-        x_test = pca.transform(x_test)
         visualize(x_train, y_train)
 
     if args.kmeans == 1:
