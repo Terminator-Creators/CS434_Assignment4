@@ -116,7 +116,7 @@ class KMeans():
             # Gotta get the mode of each subpurity, then divide that number by the size of the buket
             mode = st.mode(purity[k])
             kPurities[k] = purity[k].count(mode)/len(purity[k])
-        return st.mean(kPurities)
+        return np.mean(kPurities)
 
     # DONE ------
     def fit(self, x):
