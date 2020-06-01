@@ -1,7 +1,5 @@
 # Assignment 4
-## Alison Jones
-## Arnav Bhutani
-## Justin Parks
+## Alison Jones, Arnav Bhutani, Justin Parks
 
 ### How to Run:
 
