@@ -155,9 +155,11 @@ class KMeans():
         # Start assuming the points are the same, calc the differences squared and sum them
         # After the sum, we can sqrt it
         dist = 0
-        print(x)
-        print(y)
         for i in range(len(x)):
-            dist += ((x[i] - y[i]) * (x[i] - y[i]))
+            try:
+                dist += ((x[i] - y[i]) * (x[i] - y[i]))
+            except:
+                print(x)
+                print(y)
 
         return math.sqrt(dist)

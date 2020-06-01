@@ -104,13 +104,17 @@ def apply_kmeans(do_pca, x_train, y_train, kmeans_max_iter, kmeans_max_k):
         # for i in range(5):
         kmeans = KMeans(k, kmeans_max_iter)
         sse_vs_iter = kmeans.fit(x_train)
-        inner_train_sses_vs_iter.append(sse_vs_iter)
-        inner_train_purities_vs_k.append(kmeans.get_purity(x_train, y_train))
-        inner_train_sses_vs_k.append(min(sse_vs_iter))
+        #inner_train_sses_vs_iter.append(sse_vs_iter)
+        #inner_train_purities_vs_k.append(kmeans.get_purity(x_train, y_train))
+        #inner_train_sses_vs_k.append(min(sse_vs_iter))
+        train_sses_vs_iter.append(sse_vs_iter)
+        train_purities_vs_k.append(kmeans.get_purity(x_train, y_train))
+        train_sses_vs_k.append(min(sse_vs_iter))
         
-        train_purities_vs_k = st.mean(inner_train_purities_vs_k)
-        train_sses_vs_iter  = st.mean(inner_train_sses_vs_iter)
-        train_sses_vs_k     = st.mean(inner_train_sses_vs_k)
+
+        # train_purities_vs_k = st.mean(inner_train_purities_vs_k)
+        # train_sses_vs_iter  = st.mean(inner_train_sses_vs_iter)
+        # train_sses_vs_k     = st.mean(inner_train_sses_vs_k)
 
     plot_y_vs_x_list(train_sses_vs_iter, x_label='iter', y_label='sse',
                      save_path='plot_sse_vs_k_subplots_%d'%do_pca)
