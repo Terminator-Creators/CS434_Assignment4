@@ -154,12 +154,16 @@ class KMeans():
         """
         # Start assuming the points are the same, calc the differences squared and sum them
         # After the sum, we can sqrt it
-        dist = 0
-        for i in range(len(x)):
-            try:
-                dist += ((x[i] - y[i]) * (x[i] - y[i]))
-            except:
-                print(x)
-                print(y)
+        # dist = 0
+        new_array = np.subtract(x, y)
+        new_array = np.square(new_array)
+        new_value = np.sum(new_array, axis=0)
+        return float(np.sqrt(new_array[0]))
+        # for i in range(len(x)):
+        #     try:
+        #         dist += ((x[i] - y[i]) * (x[i] - y[i]))
+        #     except:
+        #         print(x)
+        #         print(y)
 
-        return math.sqrt(dist)
+        # return math.sqrt(dist)
