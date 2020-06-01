@@ -106,8 +106,8 @@ class KMeans():
         # Using 1-indexing to work with the output script
         labels = self.predict(x)
         labels = [label + 1 for label in labels]
-        purity = [0]*self.k
-        
+        purity = [[]]*self.k
+        kPurities = [0]*self.k
         for k in range(self.k):
             for i in range(len(labels)):
                 if(y[i] == k+1):
@@ -115,8 +115,8 @@ class KMeans():
 
             # Gotta get the mode of each subpurity, then divide that number by the size of the buket
             mode = st.mode(purity[k])
-            purity[k] = purity[k].count(mode)/len(purity[k])
-        return st.mean(purity)
+            kPurities[k] = purity[k].count(mode)/len(purity[k])
+        return st.mean(kPurities)
 
     # DONE ------
     def fit(self, x):
@@ -155,6 +155,8 @@ class KMeans():
         # Start assuming the points are the same, calc the differences squared and sum them
         # After the sum, we can sqrt it
         dist = 0
+        print(x)
+        print(y)
         for i in range(len(x)):
             dist += ((x[i] - y[i]) * (x[i] - y[i]))
 
