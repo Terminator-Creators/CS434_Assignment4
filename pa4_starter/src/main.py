@@ -5,6 +5,7 @@ import seaborn as sns
 import os
 from matplotlib.ticker import MaxNLocator
 from matplotlib import gridspec
+import random
 
 sns.set()
 
@@ -83,7 +84,7 @@ def visualize(x_train, y_train):
     ##################################
 
 
-def apply_kmeans(do_pca, x_train, y_train, x_test, y_test, kmeans_max_iter, kmeans_max_k):
+def apply_kmeans(do_pca, x_train, y_train, kmeans_max_iter, kmeans_max_k):
     print('kmeans\n')
     train_sses_vs_iter = []
     train_sses_vs_k = []
@@ -94,12 +95,12 @@ def apply_kmeans(do_pca, x_train, y_train, x_test, y_test, kmeans_max_iter, kmea
     ##################################
 
     for k in range(1, kmeans_max_k):
+        print("kmeans loop: " + str(k))
         kmeans = KMeans(k, kmeans_max_iter)
         sse_vs_iter = kmeans.fit(x_train)
         train_sses_vs_iter.append(sse_vs_iter)
         train_purities_vs_k.append(kmeans.get_purity(x_train, y_train))
         train_sses_vs_k.append(min(sse_vs_iter))
-
 
     plot_y_vs_x_list(train_sses_vs_iter, x_label='iter', y_label='sse',
                      save_path='plot_sse_vs_k_subplots_%d'%do_pca)
@@ -112,16 +113,17 @@ def apply_kmeans(do_pca, x_train, y_train, x_test, y_test, kmeans_max_iter, kmea
 
 if __name__ == '__main__':
     args = load_args()
-    x_train, y_train, x_test, y_test = load_data(args.root_dir)
+    random.seed()
+    x_train, y_train = load_data(args.root_dir)
 
     if args.pca == 1:
         pca = PCA(args.pca_retain_ratio)
         pca.fit(x_train)
         x_train = pca.transform(x_train)
-        x_test = pca.transform(x_test)
+        
         visualize(x_train, y_train)
 
     if args.kmeans == 1:
-        apply_kmeans(args.pca, x_train, y_train, x_test, y_test, args.kmeans_max_iter, args.kmeans_max_k)
+        apply_kmeans(args.pca, x_train, y_train, args.kmeans_max_iter, args.kmeans_max_k)
 
     print('Done')

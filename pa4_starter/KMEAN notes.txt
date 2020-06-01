@@ -1,0 +1,25 @@
+
+
+
+We are given K number of clusters to be made
+we take K random samples from the dataset as the seeds for each cluster
+Then go through each example and asign it to it's nearest seed until all have been clustered
+
+D = all input examples
+c1 ... ck = the disjoint clusters (K # of them)
+d = euclidean distance between examples (straight line between the two)
+
+Select k random samples from D as cluster centers (u1 ... uk)
+
+Loop until converged or less than max_iters
+    For each example:
+        assign xi to cj such that d(uj, x1) is minimized
+    For each cluster, update the center with newly added points
+        uj = (1/abs(cj))*Sum(x) for x in cj
+
+can check if converged if u does not change
+
+
+
+FOR euclidean:
+    can calc the distance of u minus xi and do the abs on the final distance
