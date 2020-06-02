@@ -5,6 +5,7 @@ import seaborn as sns
 import os
 from matplotlib.ticker import MaxNLocator
 from matplotlib import gridspec
+import random
 
 sns.set()
 
@@ -37,6 +38,8 @@ def plot_y_vs_x_list(y_vs_x, x_label, y_label, save_path):
         os.mkdir(fld)
 
     plots_per_fig = 2
+    if(type(y_vs_x) != 'numpy.ndarray'):
+        y_vs_x = [y_vs_x]
 
     ks_sses_keys = list(range(0, len(y_vs_x)))
     js = list(range(0, len(ks_sses_keys), plots_per_fig))
@@ -101,26 +104,38 @@ def visualize(x_train, y_train):
     ##################################
 
 
-def apply_kmeans(do_pca, x_train, y_train, x_test, y_test, kmeans_max_iter, kmeans_max_k):
+def apply_kmeans(do_pca, x_train, y_train, kmeans_max_iter, kmeans_max_k):
     print('kmeans\n')
     train_sses_vs_iter = []
     train_sses_vs_k = []
     train_purities_vs_k = []
 
-    ##################################
-    #      YOUR CODE GOES HERE       #
-    ##################################
-
     for k in range(1, kmeans_max_k):
-        kmeans = KMeans(k, kmeans_max_iter)
-        sse_vs_iter = kmeans.fit(x_train)
-        train_sses_vs_iter.append(sse_vs_iter)
-        train_purities_vs_k.append(kmeans.get_purity(x_train, y_train))
-        train_sses_vs_k.append(min(sse_vs_iter))
+        print("kmeans loop: " + str(k))
+        # Part 1.2 here
+        inner_train_sses_vs_iter = []
+        inner_train_sses_vs_k = []
+        inner_train_purities_vs_k = []
+        
+        for i in range(5):
+            kmeans = KMeans(k, kmeans_max_iter)
+            sse_vs_iter = kmeans.fit(x_train)
 
+            inner_train_sses_vs_iter.append(sse_vs_iter)
+            inner_train_purities_vs_k.append(kmeans.get_purity(x_train, y_train))
+            inner_train_sses_vs_k.append(min(sse_vs_iter))
 
-    plot_y_vs_x_list(train_sses_vs_iter, x_label='iter', y_label='sse',
-                     save_path='plot_sse_vs_k_subplots_%d'%do_pca)
+            # train_sses_vs_iter.append(sse_vs_iter)
+            # train_purities_vs_k.append(kmeans.get_purity(x_train, y_train))
+            # train_sses_vs_k.append(min(sse_vs_iter))
+            
+
+        train_purities_vs_k = np.mean(inner_train_purities_vs_k)
+        train_sses_vs_iter  = np.mean(inner_train_sses_vs_iter)
+        train_sses_vs_k     = np.mean(inner_train_sses_vs_k)
+
+    # plot_y_vs_x_list(train_sses_vs_iter, x_label='iter', y_label='sse',
+                    # save_path='plot_sse_vs_k_subplots_%d'%do_pca)
     plot_y_vs_x(train_sses_vs_k, x_label='k', y_label='sse',
                 save_path='plot_sse_vs_k_%d'%do_pca)
     plot_y_vs_x(train_purities_vs_k, x_label='k', y_label='purities',
@@ -130,6 +145,7 @@ def apply_kmeans(do_pca, x_train, y_train, x_test, y_test, kmeans_max_iter, kmea
 
 if __name__ == '__main__':
     args = load_args()
+    random.seed()
     x_train, y_train = load_data(args.root_dir)
 
     if args.pca == 1:
@@ -139,6 +155,6 @@ if __name__ == '__main__':
         visualize(x_train, y_train)
 
     if args.kmeans == 1:
-        apply_kmeans(args.pca, x_train, y_train, x_test, y_test, args.kmeans_max_iter, args.kmeans_max_k)
+        apply_kmeans(args.pca, x_train, y_train, args.kmeans_max_iter, args.kmeans_max_k)
 
     print('Done')
