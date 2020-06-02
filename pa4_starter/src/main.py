@@ -61,7 +61,7 @@ def plot_y_vs_x_list(y_vs_x, x_label, y_label, save_path):
 
     print('Saved at : %s' % fld)
 
-
+# Function to plot y values versus x values
 def plot_y_vs_x(ys_vs_x, x_label, y_label, save_path):
     fld = os.path.join(args.root_dir, save_path)
     if not os.path.exists((fld)):
@@ -80,7 +80,25 @@ def plot_y_vs_x(ys_vs_x, x_label, y_label, save_path):
 
 
 def visualize(x_train, y_train):
-    pass
+    print(x_train)
+
+    new_x_train = []
+    for item in range(len(x_train)):
+        new_x_train.append(-np.sort(-x_train[item]))
+    component1 = []
+    component2 = []
+    for item in range(len(new_x_train)):
+        component1.append(new_x_train[item][0])
+        component2.append(new_x_train[item][1])
+
+    plt.scatter(component1, component2, c=y_train)
+    plt.xlabel("component1")
+    plt.ylabel("component2")
+    plt.savefig("visualize.png")
+    plt.clf()
+    
+    print('Saved at : %s' % args.root_dir)
+
     ##################################
     #      YOUR CODE GOES HERE       #
     ##################################
@@ -134,7 +152,6 @@ if __name__ == '__main__':
         pca = PCA(args.pca_retain_ratio)
         pca.fit(x_train)
         x_train = pca.transform(x_train)
-        
         visualize(x_train, y_train)
 
     if args.kmeans == 1:
